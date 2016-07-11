@@ -2,6 +2,13 @@
 
 // IDE: Arduino/Genuino Micro
 
+// autohotkey script:
+//; control shift alt win-s
+//^+!#s::
+//	Process, Close, spssengine.exe
+//	Process, Close, stats.exe
+//Return
+
 const int buttonPin  = 9;          // input pin for pushbutton (other end to GND)
 const int switchPin1 = 10;         // input pin for one side of switch (middle goes to GND)
 const int switchPin2 = 7;          // input pin for 2nd side of switch (middle goes to GND)
@@ -41,26 +48,15 @@ void sendMessage2() {
 
 // message sent if switch in middle position (sw1 and sw2 released)
 void sendSPSSKillMessage() {
-  // Win+R = run command
+  // autohotkey script will react on control shift alt win-s
   Keyboard.press(KEY_LEFT_GUI);
-  Keyboard.press('r');
+  Keyboard.press(KEY_LEFT_CTRL);
+  Keyboard.press(KEY_LEFT_SHIFT);
+  Keyboard.press(KEY_LEFT_ALT);
+  Keyboard.press('s');
   delay(100);
   Keyboard.releaseAll();
-  // run command line console
-  delay(500);
-  Keyboard.println("cmd.exe");
-  Keyboard.write(KEY_RETURN);
-  delay(1000);
-  // kill the master GUI task
-  Keyboard.print("taskkill /f /im stats.exe");
-  Keyboard.write(KEY_RETURN);
-  // and the engine just to be sure
-  Keyboard.print("taskkill /f /im spssengine.exe");
-  Keyboard.write(KEY_RETURN);
-  // close console
-  Keyboard.print("exit");
-  Keyboard.write(KEY_RETURN);
-  // wait 1s so we don't have to debounce
+  // wait 1s more so we don't have to debounce
   delay(1000);
 }
 
@@ -86,4 +82,3 @@ void loop() {
     }
   }
 }
-
